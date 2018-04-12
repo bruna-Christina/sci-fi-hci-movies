@@ -218,6 +218,7 @@ export class AppComponent {
             this.loading = false;
             this.movies.push(response);
             this.sortList(this.movies);
+            this.setYears();
             this.filteredMovies.next(this.movies.slice());
           })
           .catch((err) => {
