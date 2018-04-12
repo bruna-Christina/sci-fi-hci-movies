@@ -1,20 +1,77 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<app-loading [loading]="loading"></app-loading>
+<div class="flex-container v-flex full-height">
+  <div class="mat-toolbar mat-primary flex-container align-center" style="padding:5px">
+    <img width="70px" height="70px" alt="Site Logo" src="assets/scifiIcon.svg"/>
+    <h1 class="flex-item">SCI-FI HCI Movies Catalog</h1>  
+  </div>
+  <div class="flex-item flex-container h-flex">
+    <div class="overflow-auto padding-default" >
+      <mat-list>
+        <mat-list-item class="margin-btm">
+          <h3 class="primary-label">Filters</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="margin-btm">
+          <mat-form-field>
+            <mat-select placeholder="Categories" [formControl]="categoryFormControl" multiple (selectionChange)="changeCategorySelection($event)">
+              <ngx-mat-select-search [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'Nothing found'" [formControl]="categoryFormControlFilter"></ngx-mat-select-search>
+              <mat-option *ngFor="let cat of filteredCategories | async" [value]="cat">{{cat.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="margin-btm">
+          <mat-form-field>
+            <mat-select placeholder="Movies" [formControl]="movieFormControl" multiple (selectionChange)="changeMovieSelection($event)">
+              <ngx-mat-select-search [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'Nothing found'" [formControl]="movieFormControlFilter"></ngx-mat-select-search>
+              <mat-option *ngFor="let mov of filteredMovies | async" [value]="mov">{{mov.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="margin-btm">
+          <span matLine class="mat-select-placeholder">Year</span>
+          <ion-range-slider type="double" [min]="minYear" [max]="maxYear" [step]="1" (onFinish)="changeYearRange($event)">
+          </ion-range-slider>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+        <!-- <mat-slider></mat-slider> -->
+    </div>
+    <div class="flex-item flex-container v-flex">
+      <mat-toolbar class="flex-container" style="background-color: white">
+        <div class="flex-item">
+          <span class="primary-label"> {{movies?.length}} Movies - {{categories?.length}} Categories</span>
+        </div>
+        <div class="flex-item flex-container justify-content-end">
+          <div class="flex-container justify-content-space">
+            <button mat-raised-button color="primary" (click)="openCategoryDialog()">Add New Category</button>
+            <div class="margin-right"></div>
+            <button mat-raised-button color="primary" (click)="openMovieDialog()">Add New Movie</button>
+          </div>
+        </div>
+      </mat-toolbar>
+      <div class="flex-item warm-background">
+        <ul class="listing">
+          <ng-template ngFor let-movie [ngForOf]="movies | movieFilter: movieFilter | categoryFilter: categoryFilter | yearFilter:yearsFilter" let-i="index">
+            <li class="listing-item">
+              <h5 class="list-header">{{movie.name}} ({{movie.year}})</h5>
+              <div class="body">
+                <img style="vertical-align:middle;" aria-hidden src="{{movie?.poster}}" height="200" />
+                <small><strong>Plot:</strong>{{movie.plot}}</small>
+              </div>
+              <div class="cta">
+                <ul class="tags">
+                  <li *ngFor="let cat of movie.categories">
+                    <small class="tag">{{cat.name}}</small>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
+      <!-- <div>Pagination?</div> -->
+    </div>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-

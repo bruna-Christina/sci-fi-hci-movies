@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>New Movie</h1>
+
+<div mat-dialog-content>
+  Search the movie and select it on the list.
+  <div>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Search Movie" #searchBoxAuto (keyup)="search(searchBoxAuto.value)" 
+        [matAutocomplete]="auto" [formControl]="movieFormControl" required>
+      <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+        <mat-option *ngFor="let mov of searchmovies | async" [value]="mov.name" (onSelectionChange)="setMovieSelected(mov)">
+          <img style="vertical-align:middle;" aria-hidden src="{{mov?.poster}}" height="50" />
+          <span>{{mov.name}}</span>
+          <small *ngIf="mov.year">({{mov.year}})</small>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="movieFormControl.hasError('required')">
+        Movie is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="full-width">
+      <mat-select placeholder="Categories" [formControl]="categoryFormControl" [errorStateMatcher]="matcher" multiple (selectionChange)="changeCategorySelection($event)" required>
+        <mat-option *ngFor="let cat of data.categories" [value]="cat">{{cat.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="categoryFormControl.hasError('required')">
+        Category is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="confirmSelection(true)" color="primary">
+    Save
+  </button>
+  <button mat-raised-button (click)="confirmSelection(false)" color="warn">
+    Cancel
+  </button>
+</div>

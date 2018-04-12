@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>New Category</h1>
+
+<div mat-dialog-content>
+  Are you sure is not on the list?
+  <div>
+    <mat-form-field>
+      <input matInput tabindex="1" [(ngModel)]="name" placeholder="Name" 
+        [formControl]="nameFormControl" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="nameFormControl.hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="confirmSelection(true)" color="primary">
+    Save
+  </button>
+  <button mat-raised-button (click)="confirmSelection(false)" color="warn">
+    Cancel
+  </button>
+</div>
